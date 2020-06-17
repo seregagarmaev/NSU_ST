@@ -1,0 +1,33 @@
+# Here is the list of commands to create graph of tasks for ST classes
+
+CREATE CLASS Student IF NOT EXISTS EXTENDS V
+CREATE PROPERTY Student.name IF NOT EXISTS STRING
+
+CREATE CLASS BDACourse IF NOT EXISTS EXTENDS V
+CREATE PROPERTY BDACourse.name IF NOT EXISTS STRING
+
+CREATE CLASS Task IF NOT EXISTS EXTENDS V
+CREATE PROPERTY Task.name IF NOT EXISTS STRING
+
+CREATE CLASS finished_in_time IF NOT EXISTS EXTENDS E
+CREATE CLASS was_asked IF NOT EXISTS EXTENDS E
+
+CREATE VERTEX BDACourse SET name='Storage Technologies'
+
+CREATE VERTEX Task SET name = 'stdio pipelines'
+CREATE VERTEX Task SET name = 'RDB automation'
+CREATE VERTEX Task SET name = 'Redis'
+CREATE VERTEX Task SET name = 'MongoDB'
+CREATE VERTEX Task SET name = 'OrientDB'
+CREATE VERTEX Task SET name = 'MapReduce'
+CREATE VERTEX Task SET name = 'just to exist'
+
+CREATE EDGE was_asked FROM (SELECT FROM Task) TO (SELECT FROM BDACourse WHERE name = 'Storage Technologies')
+
+INSERT INTO Student(name) VALUES ('Sergei Garmaev'), ('Student that did everything in time'), ('Student which did not study at all')
+
+CREATE EDGE finished_in_time FROM (SELECT FROM Student WHERE name = 'Sergei Garmaev') TO (SELECT FROM Task WHERE name in ['stdio pipelines', 'OrientDB'])
+
+CREATE EDGE finished_in_time FROM (SELECT FROM Student WHERE name = 'Student that did everything in time') TO (SELECT FROM Task)
+
+CREATE EDGE finished_in_time FROM (SELECT FROM Student WHERE name = 'Student which did not study at all') TO (SELECT FROM Task WHERE name = 'just to exist')
