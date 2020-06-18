@@ -1,4 +1,7 @@
 # Here is the list of commands to create graph of tasks for ST classes
+# command to start orientdb specifying a root password
+# docker run -d --name orientdb -p 2424:2424 -p 2480:2480 -e ORIENTDB_ROOT_PASSWORD=rootpwd orientdb
+# need to connect on 2480 port of localhost
 
 CREATE CLASS Student IF NOT EXISTS EXTENDS V
 CREATE PROPERTY Student.name IF NOT EXISTS STRING
