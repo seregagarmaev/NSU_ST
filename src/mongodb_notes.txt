@@ -1,0 +1,7 @@
+# starting mongoDB process by
+sudo systemctl start mongod
+
+# verify that it was started correctly by
+sudo systemctl status mongod
+
+
