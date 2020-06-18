@@ -1,0 +1,141 @@
+# redis-server starts a local server
+# redis-cli launches a client
+# Here are terminal logs from redis-cli
+
+
+(base) sergei@t440p:~$ redis-cli
+127.0.0.1:6379> set my_name sergei
+OK
+127.0.0.1:6379> get my_name
+"sergei"
+127.0.0.1:6379> mset my_name sergei others_name other_name
+OK
+127.0.0.1:6379> mget my_name others_name
+1) "sergei"
+2) "other_name"
+127.0.0.1:6379> set number_of_tasks_done 3
+OK
+127.0.0.1:6379> incr number_of_tasks_done
+(integer) 4
+127.0.0.1:6379> get number_of_tasks_done
+"4"
+127.0.0.1:6379> mset user:sergei:group "BDA & AI" user:sergei:department "mmf"
+OK
+127.0.0.1:6379> mget user:sergei:group user:sergei:department
+1) "BDA & AI"
+2) "mmf"
+
+
+############### HASH ############################
+127.0.0.1:6379> hmset user:sergei group "BDA & AI"
+OK
+127.0.0.1:6379> hmset user:sergei department "mmf"
+OK
+127.0.0.1:6379> hmget user:sergei group
+1) "BDA & AI"
+127.0.0.1:6379> hmget user:sergei department
+1) "mmf"
+127.0.0.1:6379> hkeys user:sergei
+1) "group"
+2) "department"
+127.0.0.1:6379> hvals user:sergei
+1) "BDA & AI"
+2) "mmf"
+127.0.0.1:6379> hlen user:sergei
+(integer) 2
+
+
+############### LIST ############################
+127.0.0.1:6379> rpush prepared_tasks 1
+(integer) 1
+127.0.0.1:6379> rpush prepared_tasks 5
+(integer) 2
+127.0.0.1:6379> rpush prepared_tasks 4
+(integer) 3
+127.0.0.1:6379> rpush prepared_tasks 3
+(integer) 4
+127.0.0.1:6379> llen prepared_tasks
+(integer) 4
+127.0.0.1:6379> lrange prepared_tasks
+(error) ERR wrong number of arguments for 'lrange' command
+127.0.0.1:6379> lrange prepared_tasks 0 2
+1) "1"
+2) "5"
+3) "4"
+127.0.0.1:6379> lrange prepared_tasks 0 1
+1) "1"
+2) "5"
+127.0.0.1:6379> lrem prepared_tasks -1 1
+(integer) 1
+127.0.0.1:6379> lrange prepared_tasks 0 2
+1) "5"
+2) "4"
+3) "3"
+127.0.0.1:6379> lpop prepared_tasks
+"5"
+
+############### SET #############################
+127.0.0.1:6379> sadd skills "stdio piping"
+(integer) 1
+127.0.0.1:6379> sadd skills "mongoDB"
+(integer) 1
+127.0.0.1:6379> sadd skills "orientDB"
+(integer) 1
+127.0.0.1:6379> sadd skills "redis"
+(integer) 1
+127.0.0.1:6379> smembers skills
+1) "stdio piping"
+2) "orientDB"
+3) "redis"
+4) "mongoDB"
+127.0.0.1:6379> sadd tasks "stdio piping" "mongoDB" "orientDB" "redis" "mapreduce"
+(integer) 5
+127.0.0.1:6379> sinter skills tasks
+1) "stdio piping"
+2) "orientDB"
+3) "redis"
+4) "mongoDB"
+127.0.0.1:6379> sunion skills tasks
+1) "stdio piping"
+2) "mapreduce"
+3) "orientDB"
+4) "redis"
+5) "mongoDB"
+127.0.0.1:6379> sunionstore diff skills tasks
+(integer) 5
+127.0.0.1:6379> smembers diff
+1) "stdio piping"
+2) "mapreduce"
+3) "orientDB"
+4) "redis"
+5) "mongoDB"
+127.0.0.1:6379> sunionstore union skills tasks
+(integer) 5
+127.0.0.1:6379> smembers union
+1) "stdio piping"
+2) "mapreduce"
+3) "orientDB"
+4) "redis"
+5) "mongoDB"
+
+
+############### EXPIRY ############################
+127.0.0.1:6379> set moments_of_Spring 17 ex 17
+OK
+127.0.0.1:6379> ttl moments_of_spring
+(integer) -2
+127.0.0.1:6379> exists moments_of_Spring
+(integer) 0
+127.0.0.1:6379> set moments_of_Spring 17 ex 17
+OK
+127.0.0.1:6379> ttl moments_of_Spring
+(integer) 13
+127.0.0.1:6379> exists moments_of_Spring
+(integer) 1
+127.0.0.1:6379> get moments_of_Spring
+"17"
+127.0.0.1:6379> exists moments_of_Spring
+(integer) 0
+127.0.0.1:6379> 
+
+
